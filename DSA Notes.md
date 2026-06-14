@@ -439,4 +439,54 @@ public:
 
 But not efficient for printing the nth row or particular element
 
+To print a perticular element from ith row and jth column. (Zero indexed)
 
+use formula  
+$$
+{}^nC_r = \frac{n!}{r!(n-r)!}
+$$
+To get i<sup>th</sup> row and j<sup>th</sup> column element use 
+$$
+{}^iC_j = \frac{i!}{j!(i-j)!}
+$$
+
+However while printing the entire row this generating each element with nCr is costly due to looping.
+
+*Approach*: Generate the next element based on previous element.
+Explaination:
+suppose row is 5<sup>th</sup>  
+Col 0: <sup>5</sup>C<sub>0</sub> = 5!/5! = 1  
+Col 1: 5!/4! = (5x4x3x2x1)/(4x3x2x1) = 1 x 5/1  
+Col 2: 5!/(2!.3!) = (5x4x3x2x1)/(2x1)(3x2x1) = [1 x 5/1] x 4/2  
+.  
+.  
+So elem = prevElem x [(row - i) / i]
+
+```cpp
+class Solution {
+    vector<int> genRows(int rowNo) {
+        vector<int> row = {1};
+        int ans = 1;
+        for (int i = 1; i < rowNo; i++) {
+            ans *= (rowNo - i + 1);
+            ans /= i;
+            row.push_back(ans);
+        }
+        row.push_back(1);
+        return row;
+    }
+public:
+    vector<vector<int>> generate(int numRows) {
+        vector<vector<int>> result;
+        result.push_back({1});
+        if (numRows == 1) {
+            return result;
+        }
+        
+        for (int i = 1; i < numRows; i++) {
+            result.push_back(genRows(i));
+        }
+        return result;
+    }
+};
+```
