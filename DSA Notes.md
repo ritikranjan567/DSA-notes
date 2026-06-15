@@ -490,3 +490,54 @@ public:
     }
 };
 ```
+**Problem:** Majority elements, finding elements whose frequency > N/3.
+
+I/P = [1, 1, 3, 3, 1, 2, 2, 2]  
+O/P = [1, 2]
+
+*Observation:* Output have minimum 0 elements and max 2 elements
+
+*Approach:*  
+- Brute force: Count each element check if greater than n/3 then push to result
+- Better: 
+    - Sort the array and check and count element wise
+    - use map to kep count record and check count and return the result
+- Optimal: Boyer's Algo
+Just instead of keeping 1 counter and 1 majElem. 2 counters and 2 Maj Elems will be maintained.
+```cpp
+vector<int> majorityElement(vector<int>& nums) {
+    vector<int> result;
+    int mElem1 = INT_MIN, mElem2 = INT_MIN, cnt1 = 0, cnt2 = 0, size = nums.size();
+
+    for (int i = 0; i < size; i++) {
+        // the second condition is for not keeping track of same elements in both counts
+        if (cnt1 == 0 && mElem2 != nums[i]) {
+            mElem1 = nums[i];
+            cnt1 = 1;
+        } else if (cnt2 == 0 && mElem1 != nums[i]) {
+            mElem2 = nums[i];
+            cnt2 = 1;
+        } else if (mElem1 == nums[i]) {
+            cnt1++;
+        } else if (mElem2 == nums[i]) {
+            cnt2++;
+        } else { cnt1--; cnt2--; }
+    }
+
+    // Now checking if both the obtained elements frequency > n/3
+    cnt1 = 0; cnt2 = 0;
+
+    for (int i = 0; i < size; i++) {
+        if (nums[i] == mElem1) cnt1++;
+        if (nums[i] == mElem2) cnt2++;
+    }
+
+    if (cnt1 > size / 3) result.push_back(mElem1);
+    if (cnt2 > size / 3) result.push_back(mElem2);
+
+    return result;
+    
+}
+```
+T.C = O (n), S.C = O (1)
+
