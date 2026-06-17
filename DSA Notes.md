@@ -541,3 +541,107 @@ vector<int> majorityElement(vector<int>& nums) {
 ```
 T.C = O (n), S.C = O (1)
 
+**Problem:** 3 Sum : sum of 3 distinct elements of the array is equal to 0  
+Link https://leetcode.com/problems/3sum/description/
+
+*Approach:*
+- Brute force: 
+```psuedo
+i = 0 -> n {
+    j = i + 1 -> n {
+        k = j + 1 -> n {
+            if (a[i] + a[j] + a[k] == 0) {
+                // this will check the distinct triplet
+                set.insert(sort(a[i, j, k]));
+            }
+        }
+    }
+}
+return vector<int> ans(set.begin(), set.end());
+```
+T.C = O (n<sup>3</sup>), S.C = O(No. of tripletes) 
+- Better:
+Trying to get rid of third k loop by maintain a hash_map/set
+```cpp
+vector<vector<int>> threeSum(vector<int>& arr) {
+    // Store unique triplets
+    set<vector<int>> ans;
+    int n = arr.size();
+
+    // First loop for first element
+    for (int i = 0; i < n; i++) {
+        // Set to store elements seen in this iteration
+        set<int> hashset;
+
+        // Second loop for second element
+        for (int j = i + 1; j < n; j++) {
+            // Calculate third element needed
+            int third = -(arr[i] + arr[j]);
+
+            // If third already in set, we found a triplet
+            if (hashset.find(third) != hashset.end()) {
+                vector<int> temp = {arr[i], arr[j], third};
+                sort(temp.begin(), temp.end());
+                ans.insert(temp);
+            }
+
+            // Add current element to set
+            hashset.insert(arr[j]);
+        }
+    }
+
+    // Convert set to vector
+    return vector<vector<int>>(ans.begin(), ans.end());
+}
+```
+T.C = O (n<sup>2</sup> log(n)), S.C = O (n) + O (no. of tripletes)
+
+- Optimal: Get rid of set data-struture to used for sorting and getting unique elements to save on space complexity
+    - first sort the whole array
+    - use three pointers to add and check
+    - if sum > 0 then increament middle/second if < 0 then decreament last/third
+    - if sum = 0 then add the triplets to result and update the triple index
+```cpp
+// Function to find triplets with sum zero
+vector<vector<int>> threeSum(vector<int>& arr, int n) {
+    // Sort the array
+    sort(arr.begin(), arr.end());
+    // Store final result
+    vector<vector<int>> ans;
+
+    // First loop for first element
+    for (int i = 0; i < n; i++) {
+        // Skip duplicates for first element
+        if (i > 0 && arr[i] == arr[i - 1]) continue;
+
+        // Two pointers
+        int left = i + 1, right = n - 1;
+
+        // Find pairs for current arr[i]
+        while (left < right) {
+            int sum = arr[i] + arr[left] + arr[right];
+
+            if (sum == 0) {
+                ans.push_back({arr[i], arr[left], arr[right]});
+                left++, right--;
+
+                // Skip duplicates for left
+                while (left < right && arr[left] == arr[left - 1]) left++;
+                // Skip duplicates for right
+                while (left < right && arr[right] == arr[right + 1]) right--;
+            }
+            else if (sum < 0) left++;
+            else right--;
+        }
+    }
+    return ans;
+}
+```
+T.C = O (n log (n)) + O (n<sup>2</sup>), S.C = O (1)
+
+
+
+
+
+
+
