@@ -1,6 +1,6 @@
-## Baidyanath's DSA notes
+# Baidyanath's DSA notes
 
-**Problem:** Given an array, it might be an rotated version (clock-wise) of the original array.
+## Problem: Given an array, it might be an rotated version (clock-wise) of the original array.
 *Check the orignial array was sorted in ascending order or not*
 https://leetcode.com/problems/check-if-array-is-sorted-and-rotated/
 
@@ -47,7 +47,7 @@ bool check(vector<int>& nums) {
     }
 ```
 ---
-**Problem** Remove duplicate elements from the array
+## Problem: Remove duplicate elements from the array
 Example: I/P [1,1,2,2,2,3,3]
 O/P [1,2,3]
 
@@ -73,7 +73,7 @@ int removeDuplicates(vector<int>& nums) {
 T.C = O (N), S.C = O (1)
 
 ---
-**Problem** Move 0s to the end of the array.
+## Problem: Move 0s to the end of the array.
 Example: I/P - [1, 0, 2, 3, 2, 0, 0, 4, 5, 1]
 O/P - [1, 2, 3, 2, 4, 5, 1, 0, 0, 0]
 
@@ -103,7 +103,7 @@ void moveZeroes(vector<int>& nums) {
 ```
 T.C = O (N), S.C = O (1)
 ---
-**Problem:** Longest subarray with given sum k. There are Two Types
+## Problem: Longest subarray with given sum k. There are Two Types
 - Only positive array:
 - integer both positive and negative number in array
 
@@ -168,7 +168,7 @@ int longestSubarray(vector<int>& arr, int k) {
 ```
 T.C = O (N), S.C = O (1)
 
-**Problem**: In given array find two elements whose sum equal to target.
+## Problem: In given array find two elements whose sum equal to target.
 
 **Approach**: Brute force si N^2 approach
 
@@ -178,7 +178,7 @@ T.C = O (N log N), S.C = O (N)
 In Optimal solution we can save space by sorting the array and then using two pointer solution
 
 ---
-**Problem:** Sort Colors: Sort an array containing 3 numbers `0s`, `1s` and `2s`. Such that all the `0s` are at the start, `1s` at the middle and `2s` at that last.
+## Problem: Sort Colors: Sort an array containing 3 numbers `0s`, `1s` and `2s`. Such that all the `0s` are at the start, `1s` at the middle and `2s` at that last.
 
 Exmaple:
 I/P: [2,0,2,1,1,0], O/P: [0,0,1,1,2,2]
@@ -208,7 +208,7 @@ void sortColors(vector<int>& nums) {
 T.C = O (N), S.C = O (1)
 
 ---
-**Problem:** Given an array, find the subarray with maximum sum.
+## Problem: Given an array, find the subarray with maximum sum.
 
 Example:
 
@@ -278,7 +278,7 @@ vector<int> findSubarray(vector<int>& arr) {
 
 ----
 
-**Problem** Stock Buy and Sell.
+## Problem: Stock Buy and Sell.
 Given array of stock price in each day. Find the maximum profit.  
 Example:  
 I/P: [7, 1, 5, 3, 6, 4]
@@ -308,7 +308,7 @@ Time Complexity:  O (N)
 
 ---
 
-**Problem** Next Permutation  
+## Problem: Next Permutation  
 I/P: [1, 3, 2]; O/P: [2, 1, 3]
 For ascending order perputation of [1, 2, 3] -> [1, 3, 2] -> [2, 1, 3] -> [2, 3, 1] -> [3, 1, 2] -> [3, 2, 1]  
 so [1, 3, 2] next permutation is [2, 1, 3]
@@ -360,7 +360,7 @@ void nextPermutation(vector<int>& nums) {
 
 T.C = O (N), S.C = O (1)
 
-**Problem** Longest Consecutive sequence in array  
+## Problem: Longest Consecutive sequence in array  
 Input: nums = [100,4,200,1,3,2]  
 Output: 4  
 Explanation: The longest consecutive elements sequence is [1, 2, 3, 4]. Therefore its length is 4.
@@ -404,7 +404,7 @@ int longestConsecutive(vector<int>& nums) {
     return longest;
 }
 ```
-**Problem** Pascal Triangle: https://leetcode.com/problems/pascals-triangle/description
+## Problem: Pascal Triangle: https://leetcode.com/problems/pascals-triangle/description
 
 My Solution to generate the triangle:
 ```cpp
@@ -490,7 +490,7 @@ public:
     }
 };
 ```
-**Problem:** Majority elements, finding elements whose frequency > N/3.
+## Problem: Majority elements, finding elements whose frequency > N/3.
 
 I/P = [1, 1, 3, 3, 1, 2, 2, 2]  
 O/P = [1, 2]
@@ -541,7 +541,7 @@ vector<int> majorityElement(vector<int>& nums) {
 ```
 T.C = O (n), S.C = O (1)
 
-**Problem:** 3 Sum : sum of 3 distinct elements of the array is equal to 0  
+## Problem: 3 Sum : sum of 3 distinct elements of the array is equal to 0  
 Link https://leetcode.com/problems/3sum/description/
 
 *Approach:*
@@ -638,6 +638,38 @@ vector<vector<int>> threeSum(vector<int>& arr, int n) {
 }
 ```
 T.C = O (n log (n)) + O (n<sup>2</sup>), S.C = O (1)
+
+## Problem: Longest sub-array with sum = 0  
+Practise Link: https://www.geeksforgeeks.org/problems/largest-subarray-with-0-sum/1
+
+Hint: Use Prefix sum
+
+```cpp
+int maxLength(vector<int>& arr) {
+    // code here
+    
+    int maxx = 0, size = arr.size();
+    long s = 0;
+    unordered_map<long, int> ps;
+    
+    for (int i = 0; i < size; i++) {
+        s += arr[i];
+        
+        if (s == 0) {
+            maxx = max(maxx, i + 1);
+            continue;
+        }
+        
+        if (ps.find(s) != ps.end()) {
+            maxx = max(maxx, i - ps[s]);
+        } else {
+            ps[s] = i;
+        }
+    }
+    
+    return maxx;
+}
+```
 
 
 
